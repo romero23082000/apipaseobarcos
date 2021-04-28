@@ -32,7 +32,7 @@ public class ListaSE implements Serializable{
     
     public void adicionarAlInicio(Object dato)  {
         if(cabeza==null){
-            cabeza = new Nodo(dato, cabeza);
+            cabeza = new Nodo(dato);
             cont++;
         }else{
             Nodo temp = cabeza;
@@ -40,7 +40,7 @@ public class ListaSE implements Serializable{
                 temp.setSiguiente(temp.getSiguiente());
             }
             //en el ultimo
-            temp.setSiguiente(new Nodo(dato, temp));
+            temp.setSiguiente(new Nodo(dato));
             cont++;
         }
     }

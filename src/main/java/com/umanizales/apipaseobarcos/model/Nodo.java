@@ -15,9 +15,8 @@ public class Nodo implements Serializable{
     private Object dato;
     private Nodo siguiente;
 
-    public Nodo(Object dato, Nodo siguiente) {
+    public Nodo(Object dato ) {
         this.dato = dato;
-        this.siguiente = siguiente;
     }
 
     public Object getDato() {
