@@ -1,14 +1,25 @@
 package com.umanizales.apipaseobarcos.controller;
 
+import com.umanizales.apipaseobarcos.service.ListaSEService;
 import lombok.*;
 import com.umanizales.apipaseobarcos.model.Empleado;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/capacitacion")
 
 public class CapacitacionController {
+
+    private ListaSEService listaSEService;
+
+    @Autowired
+    public CapacitacionController(ListaSEService listaSEService) {
+        this.listaSEService = listaSEService;
+    }
+
     @GetMapping
     public Empleado GetEmployee(){
         Empleado andres = new Empleado("andres Romero","1007234295",
@@ -30,5 +41,15 @@ public class CapacitacionController {
     public  Empleado crearEmpleado(@RequestBody Empleado employee){
         employee.setSalario(employee.getSalario()*1.15);
         return employee;
+    }
+    @GetMapping(path = "/count")
+    public int getCountEmpleados()
+    {
+    return listaSEService.contarNodos();
+    }
+    @GetMapping(path = "/listar")
+    public String getTotalEmpleados()
+    {
+        return listaSEService.listarNodos();
     }
 }
