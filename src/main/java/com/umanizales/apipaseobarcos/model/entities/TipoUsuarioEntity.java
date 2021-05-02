@@ -11,6 +11,7 @@ public class TipoUsuarioEntity {
     private String descripcion;
     private List<UsuarioEntity> usuarios;
 
+
     @Id
     @Column(name = "codigo", nullable = false)
     public short getCodigo() {
@@ -46,25 +47,24 @@ public class TipoUsuarioEntity {
         return true;
     }
 
-    /*
+
     @Override
     public int hashCode() {
         int result = (int) codigo;
         result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
         return result;
     }
-
     @OneToMany(mappedBy = "tipoUsuario")
-
     public List<UsuarioEntity> getUsuarios() {
         return usuarios;
     }
-
     public void setUsuarios(List<UsuarioEntity> usuarios) {
         this.usuarios = usuarios;
     }
 
-     */
+
+
+
 
 
 }

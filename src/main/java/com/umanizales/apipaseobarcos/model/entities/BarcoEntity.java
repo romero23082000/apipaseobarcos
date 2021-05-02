@@ -11,6 +11,7 @@ public class BarcoEntity {
     private short casillas;
     private List<PaseoBarcoEntity> paseos;
 
+
     @Id
     @Column(name = "codigo", nullable = false, length = 10)
     public String getCodigo() {
@@ -62,7 +63,6 @@ public class BarcoEntity {
         result = 31 * result + (int) casillas;
         return result;
     }
-
     @OneToMany(mappedBy = "barcoByBarco")
     public List<PaseoBarcoEntity> getPaseos() {
         return paseos;
@@ -71,4 +71,5 @@ public class BarcoEntity {
     public void setPaseos(List<PaseoBarcoEntity> paseos) {
         this.paseos = paseos;
     }
+
 }
