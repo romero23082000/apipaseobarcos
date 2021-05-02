@@ -9,7 +9,7 @@ public class BarcoEntity {
     private String codigo;
     private String nombre;
     private short casillas;
-    private List<PaseoBarcoEntity> paseos;
+
 
 
     @Id
@@ -63,13 +63,13 @@ public class BarcoEntity {
         result = 31 * result + (int) casillas;
         return result;
     }
-    @OneToMany(mappedBy = "barcoByBarco")
-    public List<PaseoBarcoEntity> getPaseos() {
-        return paseos;
-    }
 
-    public void setPaseos(List<PaseoBarcoEntity> paseos) {
-        this.paseos = paseos;
+    @Override
+    public String toString() {
+        return "BarcoEntity{" +
+                "codigo='" + codigo + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", casillas=" + casillas +
+                '}';
     }
-
 }

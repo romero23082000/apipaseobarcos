@@ -9,7 +9,6 @@ public class UsuarioEntity {
     private int id;
     private String correo;
     private String contrasenia;
-    private List<PaseoBarcoEntity> paseos;
     private TipoUsuarioEntity tipoUsuario;
 
     @Id
@@ -65,14 +64,7 @@ public class UsuarioEntity {
         return result;
     }
 
-    @OneToMany(mappedBy = "paseador")
-    public List<PaseoBarcoEntity> getPaseos() {
-        return paseos;
-    }
 
-    public void setPaseos(List<PaseoBarcoEntity> paseos) {
-        this.paseos = paseos;
-    }
 
     @ManyToOne
     @JoinColumn(name = "tipo_usuario", referencedColumnName = "codigo", nullable = false)

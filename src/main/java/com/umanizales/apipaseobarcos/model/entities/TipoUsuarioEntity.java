@@ -9,7 +9,7 @@ import java.util.List;
 public class TipoUsuarioEntity {
     private short codigo;
     private String descripcion;
-    private List<UsuarioEntity> usuarios;
+
 
 
     @Id
@@ -54,17 +54,4 @@ public class TipoUsuarioEntity {
         result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
         return result;
     }
-    @OneToMany(mappedBy = "tipoUsuario")
-    public List<UsuarioEntity> getUsuarios() {
-        return usuarios;
-    }
-    public void setUsuarios(List<UsuarioEntity> usuarios) {
-        this.usuarios = usuarios;
-    }
-
-
-
-
-
-
 }

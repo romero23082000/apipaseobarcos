@@ -30,20 +30,37 @@ public class ListaSE implements Serializable{
         this.cabeza = cabeza;
     }
     
-    public void adicionarAlInicio(Object dato)  {
+    public void adicionarAlFinal(Object dato)  {
         if(cabeza==null){
             cabeza = new Nodo(dato);
             cont++;
         }else{
             Nodo temp = cabeza;
             while(temp.getSiguiente()!=null){
-                temp.setSiguiente(temp.getSiguiente());
+                temp=temp.getSiguiente();
             }
             //en el ultimo
             temp.setSiguiente(new Nodo(dato));
             cont++;
         }
     }
+
+    public  void adicionarAlInicio(Object dato)
+    {
+        if (cabeza == null){
+            cabeza = new Nodo(dato);
+            cont++;
+        }else {
+            Nodo temp = new Nodo(dato);
+            temp.setSiguiente(cabeza);
+            cabeza=temp;
+
+            cont ++;
+
+        }
+    }
+
+
     public String listadoNodos(){
         String listado = "";
         Nodo temp = cabeza;
