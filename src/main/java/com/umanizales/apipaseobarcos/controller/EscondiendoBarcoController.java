@@ -31,5 +31,9 @@ public class EscondiendoBarcoController {
     public @ResponseBody ResponseEntity<Object> esconderBarco(@RequestBody RequestBarcoCoordenada requestBarcoCoordenada){
         return tableroService.esconderBarco(requestBarcoCoordenada.getCodigo(), requestBarcoCoordenada.getCoordenada());
     }
+    @PostMapping(path = "buscarPerro")
+    public @ResponseBody ResponseEntity<Object> buscarPerro(@RequestBody Coordenada coordenada){
+        return tableroService.buscarBarco(coordenada);
+    }
 
 }

@@ -3,6 +3,7 @@ package com.umanizales.apipaseobarcos.service;
 //comportamientos
 
 
+import com.umanizales.apipaseobarcos.model.Dto.CasillaBarco;
 import com.umanizales.apipaseobarcos.model.Dto.Coordenada;
 import com.umanizales.apipaseobarcos.model.Dto.RespuestaDTO;
 import com.umanizales.apipaseobarcos.model.entities.BarcoEntity;
@@ -14,87 +15,167 @@ import org.springframework.stereotype.Service;
 
 @Service //aplicacion 1 mismo tablero pa los mismos usuarios
 public class TableroService {
-    private BarcoEntity[][] tableroBarco;
-    private int ContadorAsiertos=0;
-    private int ContadorErrores=0;
+    private CasillaBarco[][] tableroBarco;
+    private int contadorAsiertos = 0;
+    private int contadorErrores = 0;
     private ListaSEService listaSEService;
+    private int contEscondidos = 0;
+    private boolean estadoJuego = false;
+
 
     @Autowired
     public TableroService(ListaSEService listaSEService) {
         this.listaSEService = listaSEService;
     }
 
-    public ResponseEntity<Object> inicializarTablero(int filas, int colum ) {
-        if (filas < 0 || colum <0){
+    public ResponseEntity<Object> inicializarTablero(int filas, int colum) {
+        if (filas < 0 || colum < 0) {
             return new ResponseEntity<>(
                     new RespuestaDTO(Contexto.MESSAGE_ROWS_COLS_POSITIVE, null,
                             Contexto.ERROR_ROWS_COLS_POSITIVE)
                     , HttpStatus.CONFLICT);
         }
 
-        tableroBarco = new BarcoEntity[filas][colum];
-            return new ResponseEntity<>(
-                    new RespuestaDTO(Contexto.SUCCESSFUL,null,null),HttpStatus.CREATED);
+        tableroBarco = new CasillaBarco[filas][colum];
+        return new ResponseEntity<>(
+                new RespuestaDTO(Contexto.SUCCESSFUL, null, null), HttpStatus.CREATED);
 
     }
 
-    public ResponseEntity<Object> esconderBarco(String codigo, Coordenada coordenada){
-        if (coordenada.getFila()<0 || coordenada.getColum()<0){
+    public ResponseEntity<Object> esconderBarco(String codigo, Coordenada coordenada) {
+        if (coordenada.getFila() < 0 || coordenada.getColum() < 0) {
             return new ResponseEntity<>(
                     new RespuestaDTO(Contexto.MESSAGE_ROWS_COLS_POSITIVE, null,
                             Contexto.ERROR_ROWS_COLS_POSITIVE)
                     , HttpStatus.CONFLICT);
         }
         BarcoEntity barcoEsconder = listaSEService.encontrarBarcoPorCodigo(codigo);
-        if (barcoEsconder!=null){
+        if (barcoEsconder != null) {
             //Validar cordenada y espacio libre
-            if (validarCordenada(coordenada)){
+            if (validarCordenada(coordenada)) {
                 //validar que no este ocupada
-                if (tableroBarco[coordenada.getFila()][coordenada.getColum()]==null){
-                    tableroBarco[coordenada.getFila()][coordenada.getColum()]=barcoEsconder;
+                if (tableroBarco[coordenada.getFila()][coordenada.getColum()] == null) {
+                    tableroBarco[coordenada.getFila()][coordenada.getColum()] =
+                    new CasillaBarco(barcoEsconder, false);
+                    contEscondidos++;
+                    if (contEscondidos == listaSEService.contarNodos()) {
+                        estadoJuego = true;
+                    }
                     return new ResponseEntity<>(
-                            new RespuestaDTO(Contexto.SUCCESSFUL,null,null),HttpStatus.ACCEPTED);
-                }
-                else
-                {
+                            new RespuestaDTO(Contexto.SUCCESSFUL, null, null), HttpStatus.ACCEPTED);
+                } else {
                     return new ResponseEntity<>(
                             new RespuestaDTO(Contexto.MESSAGE_BOX_OCUPATED, null,
                                     Contexto.ERROR_BOX_OCUPATED)
                             , HttpStatus.CONFLICT);
                 }
-            }else{
+            } else {
                 return new ResponseEntity<>(
                         new RespuestaDTO(Contexto.MESSAGE_COORD_NOT_VALIDATE, null,
                                 Contexto.ERROR_COORD_NOT_VALIDATE)
                         , HttpStatus.CONFLICT);
             }
-        }else{
-            return new ResponseEntity<>(new RespuestaDTO(Contexto.DATA_NOT_FOUND,null,
-                    Contexto.ERROR_DATA_NOT_FOUND),HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(new RespuestaDTO(Contexto.DATA_NOT_FOUND, null,
+                    Contexto.ERROR_DATA_NOT_FOUND), HttpStatus.NOT_FOUND);
         }
 
     }
-    private boolean validarCordenada(Coordenada coordenada){
-        if (coordenada.getFila() < tableroBarco.length && coordenada.getColum() < tableroBarco[0].length){
+
+    private boolean validarCordenada(Coordenada coordenada) {
+        if (coordenada.getFila() < tableroBarco.length && coordenada.getColum() < tableroBarco[0].length) {
             return true;
         }
         return false;
     }
 
-    public ResponseEntity<Object> visualizarTabler(){
-        if (tableroBarco==null){
+    public ResponseEntity<Object> visualizarTabler() {
+        if (tableroBarco == null) {
             return new ResponseEntity<>(
                     new RespuestaDTO(Contexto.MESSAGE_BOARD_VOID, null,
                             Contexto.ERROR_BOARD_VOID)
                     , HttpStatus.CONFLICT);
-        }else
-        {
+        } else {
             return new ResponseEntity<>(
-                    new RespuestaDTO(Contexto.SUCCESSFUL,tableroBarco,null),HttpStatus.OK);
+                    new RespuestaDTO(Contexto.SUCCESSFUL, tableroBarco, null), HttpStatus.OK);
         }
     }
 
+    public ResponseEntity<Object> buscarBarco(Coordenada coordenada)
+    {
+        if (estadoJuego) {
+            if (validarCordenada(coordenada)) {
+                if (tableroBarco[coordenada.getColum()][coordenada.getFila()] == null &&
+                        tableroBarco[coordenada.getColum()][coordenada.getFila()].isMarcada()) {
+
+                    tableroBarco[coordenada.getColum()][coordenada.getFila()].setMarcada(true);
+                    contadorAsiertos++;
+                    return this.validarEstadoJuego(true,tableroBarco[coordenada.getColum()][coordenada.getFila()]
+                    .getBarcoEntity());
+
+                } else {
+                    contadorErrores++;
+                    return this.validarEstadoJuego(false,null);
+                }
+
+            } else {
+                return new ResponseEntity<>(
+                        new RespuestaDTO(Contexto.MESSAGE_COORD_NOT_VALIDATE, null,
+                                Contexto.ERROR_COORD_NOT_VALIDATE)
+                        , HttpStatus.CONFLICT);
+            }
+        }
+        else
+        {
+            return new ResponseEntity<>(
+                    new RespuestaDTO(Contexto.MESSAGE_STATE_GAME_INACTIVE, null,
+                            Contexto.ERROR_STATE_GAME_INACTIVE)
+                    , HttpStatus.CONFLICT);
+        }
+
+    }
+
+    private ResponseEntity<Object> validarEstadoJuego(boolean exito, BarcoEntity barcoEntity)
+    {
+        if(exito){
+            if (contadorAsiertos== listaSEService.contarNodos())
+            {
+                estadoJuego=false;
+                tableroBarco=null;
+                return new ResponseEntity<>(
+                        new RespuestaDTO(Contexto.SUCCESSFUL,
+                                null,null)
+                        , HttpStatus.OK);
 
 
+            }
 
+            else
+            {
+                return new ResponseEntity<>(
+                        new RespuestaDTO(Contexto.SUCCESSFUL,barcoEntity ,null)
+                        , HttpStatus.OK);
+            }
+        }
+        else
+        {
+            if (contadorErrores >= this.listaSEService.contarNodos()*Contexto.PERCENTAGE_ERROR_GAME)
+            {
+                estadoJuego=false;
+                tableroBarco=null;
+                return new ResponseEntity<>(
+                        new RespuestaDTO("Has perdido", null,
+                                "Has superado el numero de intentos")
+                        , HttpStatus.CONFLICT);
+            }
+            else
+            {
+
+                return new ResponseEntity<>(
+                        new RespuestaDTO("Has fallado", null,
+                                null)
+                        , HttpStatus.CONFLICT);
+            }
+        }
+    }
 }
