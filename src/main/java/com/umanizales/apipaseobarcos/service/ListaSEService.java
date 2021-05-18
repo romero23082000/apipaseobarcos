@@ -47,5 +47,9 @@ public class ListaSEService {
         }
         return true;
     }
+
+    public BarcoEntity encontrarBarcoPorCodigo(String codigo){
+       return (BarcoEntity) this.listaSE.EncontrarDatoPorCodigo(codigo);
+    }
 }
 

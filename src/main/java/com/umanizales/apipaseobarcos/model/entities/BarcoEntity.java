@@ -44,16 +44,13 @@ public class BarcoEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o instanceof String){
+            if (o.toString().equals(this.codigo)){
+                return true;
+            }
+        }
 
-        BarcoEntity that = (BarcoEntity) o;
-
-        if (casillas != that.casillas) return false;
-        if (codigo != null ? !codigo.equals(that.codigo) : that.codigo != null) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-
-        return true;
+        return false;
     }
 
     @Override

@@ -25,9 +25,14 @@ public class PaseoBarcosController {
         return listaSEService.listarNodos();
     }
     @GetMapping(path = "/listar")
-    public List<BarcoEntity> listarBarcosListaSe(){
-        return  null;
+    public String getAllBarcos(){
+        return  listaSEService.listarNodos();
 }
+
+    @GetMapping(path = "/{codigo}")
+    public BarcoEntity encontrarBarcoPorCodigo(@PathVariable("codigo") String codigo){
+        return listaSEService.encontrarBarcoPorCodigo(codigo);
+    }
 
     /*@GetMapping
         public  String getMessage(){
