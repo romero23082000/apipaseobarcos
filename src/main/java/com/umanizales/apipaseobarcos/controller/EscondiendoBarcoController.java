@@ -2,6 +2,10 @@ package com.umanizales.apipaseobarcos.controller;
 
 import com.umanizales.apipaseobarcos.model.Dto.Coordenada;
 import com.umanizales.apipaseobarcos.model.Dto.RequestBarcoCoordenada;
+import com.umanizales.apipaseobarcos.model.ListaSE;
+import com.umanizales.apipaseobarcos.repositorio.BarcoRepositorio;
+import com.umanizales.apipaseobarcos.service.BarcoService;
+import com.umanizales.apipaseobarcos.service.ListaSEService;
 import com.umanizales.apipaseobarcos.service.TableroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +31,14 @@ public class EscondiendoBarcoController {
     public ResponseEntity<Object> visualizarTablero(){
         return tableroService.visualizarTabler();
     }
+    @GetMapping(path = "seleccionar_tablero")
+    public  ResponseEntity<Object> seleccionarTablero(){return tableroService.SelecTablero();}
     @PostMapping(path = "esconderBarco")
     public @ResponseBody ResponseEntity<Object> esconderBarco(@RequestBody RequestBarcoCoordenada requestBarcoCoordenada){
         return tableroService.esconderBarco(requestBarcoCoordenada.getCodigo(), requestBarcoCoordenada.getCoordenada());
     }
-    @PostMapping(path = "buscarPerro")
-    public @ResponseBody ResponseEntity<Object> buscarPerro(@RequestBody Coordenada coordenada){
+    @PostMapping(path = "buscarBarco")
+    public @ResponseBody ResponseEntity<Object> buscarBarco(@RequestBody Coordenada coordenada){
         return tableroService.buscarBarco(coordenada);
     }
 

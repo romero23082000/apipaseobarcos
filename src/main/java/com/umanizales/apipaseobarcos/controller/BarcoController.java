@@ -20,6 +20,10 @@ public class BarcoController {
     public @ResponseBody ResponseEntity<Object> getAllBarcos(){
         return barcoService.getAllBarcos();
     }
+    @GetMapping(path = "cantidad_barcos")
+    public @ResponseBody ResponseEntity<Object> cantBarcos(){
+        return barcoService.cantBarcos();
+    }
     @GetMapping(path = "/{code}")
     public @ResponseBody ResponseEntity<Object> getByIdBarco(@PathVariable("code") String code){
         return barcoService.getBarcosByCode(code);

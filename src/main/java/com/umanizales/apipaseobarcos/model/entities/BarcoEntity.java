@@ -1,6 +1,7 @@
 package com.umanizales.apipaseobarcos.model.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity

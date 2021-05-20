@@ -24,4 +24,15 @@ public final class Contexto
 
     public static final String MESSAGE_STATE_GAME_INACTIVE="Juego Inactivo";
     public static final String ERROR_STATE_GAME_INACTIVE="El JUEGO NO SE ENCUENTRA INICIADO";
+
+    public static final String MESSAGE_BOXES_NEGATIVE="Las casillas del barco no puede ser un numero negativo";
+    public static final String ERROR_BOXES_NEGATIVE="CASILLAS DEL BARCO NEGATIVAS";
+
+    public static final String MESSAGE_WIN_THE_GAME="Has ganado el juego";
+
+    public static final String MESSAGE_LOST_THE_GAME="Has perdido el juego";
+    public static final String ERROR_LOST_THE_GAME="Has superado el numero de intentos";
+
+
+    public static final String MESSAGE_SHOT_FAILED="Has fallado el tiro";
 }

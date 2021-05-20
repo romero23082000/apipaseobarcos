@@ -14,6 +14,6 @@ import java.io.Serializable;
 public class Coordenada implements Serializable {
     private int fila;
     private int colum;
-
+    private int seleccionTablero;
 
 }

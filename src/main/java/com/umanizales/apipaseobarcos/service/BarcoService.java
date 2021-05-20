@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class BarcoService {
     private BarcoRepositorio barcoRepositorio;
 
+
     @Autowired
     public BarcoService(BarcoRepositorio barcoRepositorio) {
         this.barcoRepositorio = barcoRepositorio;
@@ -22,6 +23,11 @@ public class BarcoService {
         RespuestaDTO respuesta= new RespuestaDTO(Contexto.SUCCESSFUL,
                 barcoRepositorio.findAll(),null);
     return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+    public ResponseEntity<Object> cantBarcos(){
+        RespuestaDTO respuesta= new RespuestaDTO(Contexto.SUCCESSFUL,
+                barcoRepositorio.count(),null);
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
     public ResponseEntity<Object> getBarcosByCode(String code){
 
@@ -37,10 +43,11 @@ public class BarcoService {
     }
     public ResponseEntity<Object> saveBarco(BarcoEntity barcoEntity){
         try {
-            BarcoEntity perroAlmacenado=barcoRepositorio.save(barcoEntity);
+            BarcoEntity barcoAlmacenado=barcoRepositorio.save(barcoEntity);
             return new ResponseEntity<>(
-                    new RespuestaDTO(Contexto.SUCCESSFUL,perroAlmacenado
+                    new RespuestaDTO(Contexto.SUCCESSFUL,barcoAlmacenado
                             ,null),HttpStatus.CREATED);
+
         }
         catch (Exception ex)
         {
@@ -67,9 +74,9 @@ public class BarcoService {
         if(barcoRepositorio.existsById(barcoEntity.getCodigo()))
         {
             try {
-                BarcoEntity perroAlmacenado=barcoRepositorio.save(barcoEntity);
+                BarcoEntity barcoAlmacenado=barcoRepositorio.save(barcoEntity);
                 return new ResponseEntity<>(
-                        new RespuestaDTO(Contexto.SUCCESSFUL,perroAlmacenado
+                        new RespuestaDTO(Contexto.SUCCESSFUL,barcoAlmacenado
                                 ,null),HttpStatus.ACCEPTED);
             }
             catch (Exception ex)
