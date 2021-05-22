@@ -26,7 +26,7 @@ public class BarcoService {
     }
     public ResponseEntity<Object> cantBarcos(){
         RespuestaDTO respuesta= new RespuestaDTO(Contexto.SUCCESSFUL,
-                barcoRepositorio.count(),null);
+                 barcoRepositorio.count(),null);
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
     public ResponseEntity<Object> getBarcosByCode(String code){

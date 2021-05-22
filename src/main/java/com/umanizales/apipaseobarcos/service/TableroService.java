@@ -22,16 +22,14 @@ public class TableroService {
     private int contEscondidos = 0;
     private boolean estadoJuego = false;
     private ListaSEService listaSEService;
-    private BarcoService barcoService;
+
 
 
     @Autowired
     public TableroService(ListaSEService listaSEService) {
         this.listaSEService = listaSEService;
     }
-    public TableroService(BarcoService barcoService) {
-        this.barcoService = barcoService;
-    }
+
 
 
     public ResponseEntity<Object> inicializarTablero(int filas, int colum) {
@@ -115,18 +113,18 @@ public class TableroService {
         }
     }
 
-    public ResponseEntity<Object> SelecTablero() {
-        if (barcoService.cantBarcos() <= 9) {
+    public ResponseEntity<Object> SelecTablero(int count) {
+        if (count <= 9) {
             tableroBarco = new CasillaBarco[10][10];
             return new ResponseEntity<>(
                     new RespuestaDTO(Contexto.SUCCESSFUL, null, null), HttpStatus.CREATED);
         }
-        if (barcoRepositorio.count() >= 10 && barcoRepositorio.count() <= 20) {
+        if (count >= 10 && count <= 20) {
             tableroBarco = new CasillaBarco[20][20];
             return new ResponseEntity<>(
                     new RespuestaDTO(Contexto.SUCCESSFUL, null, null), HttpStatus.CREATED);
         }
-        if (barcoRepositorio.count() > 20) {
+        if (count > 20) {
             tableroBarco = new CasillaBarco[30][30];
             return new ResponseEntity<>(
                     new RespuestaDTO(Contexto.SUCCESSFUL, null, null), HttpStatus.CREATED);

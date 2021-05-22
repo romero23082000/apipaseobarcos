@@ -31,8 +31,8 @@ public class EscondiendoBarcoController {
     public ResponseEntity<Object> visualizarTablero(){
         return tableroService.visualizarTabler();
     }
-    @GetMapping(path = "seleccionar_tablero")
-    public  ResponseEntity<Object> seleccionarTablero(){return tableroService.SelecTablero();}
+    @PostMapping(path = "seleccionar_tablero")
+    public  ResponseEntity<Object> seleccionarTablero(@RequestBody Coordenada coordenada){ return tableroService.SelecTablero(coordenada.getSeleccionTablero());}
     @PostMapping(path = "esconderBarco")
     public @ResponseBody ResponseEntity<Object> esconderBarco(@RequestBody RequestBarcoCoordenada requestBarcoCoordenada){
         return tableroService.esconderBarco(requestBarcoCoordenada.getCodigo(), requestBarcoCoordenada.getCoordenada());
